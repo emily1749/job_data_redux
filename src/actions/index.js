@@ -25,3 +25,17 @@ export const setMergeColor = color => {
     payload: color,
   };
 };
+
+export const setlocationSubmitted = bool => {
+  return {
+    type: 'LOCATION_SUBMITTED',
+    payload: bool,
+  };
+};
+
+export const setButtonColor = color => {
+  return {
+    type: 'BUTTON_COLOR',
+    payload: color,
+  };
+};

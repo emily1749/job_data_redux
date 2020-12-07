@@ -8,6 +8,7 @@ import {
   setBubbleColor,
   setQuickColor,
   setMergeColor,
+  setButtonColor,
 } from '../actions';
 import Loading from './Loading';
 import BarGraph from './BarGraph';
@@ -15,7 +16,6 @@ import BarGraph from './BarGraph';
 class App extends React.Component {
   constructor() {
     super();
-
     this.state = {
       city: '',
       state: '',
@@ -744,6 +744,7 @@ const mapStateToProps = state => {
     bubbleColor: state.bubbleColor,
     quickColor: state.quickColor,
     mergeColor: state.mergeColor,
+    buttonColor: state.buttonColor,
   };
 };
 // ReactDOM.render(<App />, document.querySelector('#root'));
@@ -753,4 +754,5 @@ export default connect(mapStateToProps, {
   setBubbleColor,
   setMergeColor,
   setQuickColor,
+  setButtonColor,
 })(App);
