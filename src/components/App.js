@@ -1,8 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
 import './index.css';
 
+import { connect } from 'react-redux';
+import {
+  setOnSort,
+  setBubbleColor,
+  setQuickColor,
+  setMergeColor,
+} from '../actions';
 import Loading from './Loading';
 import BarGraph from './BarGraph';
 
@@ -15,10 +21,10 @@ class App extends React.Component {
       state: '',
       resultArrayOriginal: [],
       resultArray: [],
-      bubbleColor: '',
-      quickColor: '',
-      mergeColor: '',
-      onSort: false,
+      // bubbleColor: '',
+      // quickColor: '',
+      // mergeColor: '',
+      // onSort: false,
       buttonColor: '',
       loading: false,
       locationSubmitted: false,
@@ -31,7 +37,8 @@ class App extends React.Component {
   resetSort = e => {
     let self = this;
     console.log('on sort reset');
-    if (this.state.onSort === false) {
+    // if (this.state.onSort === false) {
+    if (this.props.onSort === false) {
       const resultArrayCopy = JSON.parse(
         JSON.stringify(self.state.resultArrayOriginal)
       );
@@ -39,10 +46,14 @@ class App extends React.Component {
       self.setState({
         resultArray: resultArrayCopy,
 
-        bubbleColor: '',
-        quickColor: '',
-        mergeColor: '',
+        // bubbleColor: '',
+        // quickColor: '',
+        // mergeColor: '',
       });
+
+      this.props.setBubbleColor('');
+      this.props.setQuickColor('');
+      this.props.setMergeColor('');
     }
   };
 
@@ -61,7 +72,8 @@ class App extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     var self = this;
-    if (this.state.onSort === false) {
+    // if (this.state.onSort === false) {
+    if (this.props.onSort === false) {
       let resultArrayFetch = [];
       let { city, state } = this.state;
 
@@ -71,13 +83,15 @@ class App extends React.Component {
 
         let totalValue = 0;
         let count = 0;
-
+        this.props.setMergeColor('');
+        this.props.setBubbleColor('');
+        this.props.setQuickColor('');
         this.setState(
           {
             loading: true,
-            bubbleColor: '',
-            quickColor: '',
-            mergeColor: '',
+            // bubbleColor: '',
+            // quickColor: '',
+            // mergeColor: '',
           },
           () => {
             axios
@@ -142,17 +156,22 @@ class App extends React.Component {
 
   bubbleSort = () => {
     if (
-      this.state.bubbleColor === '' &&
-      this.state.quickColor === '' &&
-      this.state.mergeColor === '' &&
-      this.state.onSort === false &&
+      this.props.bubbleColor === '' &&
+      // this.state.bubbleColor === '' &&
+      this.props.quickColor === '' &&
+      // this.state.quickColor === '' &&
+      // this.state.mergeColor === '' &&
+      this.props.mergeColor === '' &&
+      this.props.onSort === false &&
       this.state.locationSubmitted === true
     ) {
       this.setState({
-        bubbleColor: '#f08a5d',
-        onSort: true,
+        // bubbleColor: '#f08a5d',
+        // onSort: true,
         buttonColor: '#00587a',
       });
+      this.props.setBubbleColor('#f08a5d');
+      this.props.setOnSort(true);
 
       console.log('on bubblesort');
 
@@ -204,9 +223,10 @@ class App extends React.Component {
             });
             self.setState({
               resultArray: dataArray,
-              onSort: false,
+              // onSort: false,
               buttonColor: '#fff',
             });
+            this.props.setOnSort(false);
             clearInterval(myInterval);
           } else {
             count = 0;
@@ -251,17 +271,22 @@ class App extends React.Component {
 
   quickSort = async () => {
     if (
-      this.state.bubbleColor === '' &&
-      this.state.quickColor === '' &&
-      this.state.mergeColor === '' &&
-      this.state.onSort === false &&
+      this.props.bubbleColor === '' &&
+      // this.state.bubbleColor === '' &&
+      this.props.quickColor === '' &&
+      // this.state.mergeColor === '' &&
+      this.props.mergeColor === '' &&
+      // this.state.onSort === false &&
+      this.props.onSort === false &&
       this.state.locationSubmitted === true
     ) {
       this.setState({
-        quickColor: '#f08a5d',
-        onSort: true,
+        // quickColor: '#f08a5d',
+        // onSort: true,
         buttonColor: '#00587a',
       });
+      this.props.setQuickColor('#f08a5d');
+      this.props.setOnSort(true);
       console.log('on quicksort');
 
       let self = this;
@@ -390,9 +415,10 @@ class App extends React.Component {
           });
           self.setState({
             resultArray: dataArray,
-            onSort: false,
+            // onSort: false,
             buttonColor: '#fff',
           });
+          this.props.setOnSort(false);
         }, 170);
       });
     }
@@ -400,18 +426,23 @@ class App extends React.Component {
 
   mergeSort = async () => {
     if (
-      this.state.bubbleColor === '' &&
-      this.state.quickColor === '' &&
-      this.state.mergeColor === '' &&
-      this.state.onSort === false &&
+      this.props.bubbleColor === '' &&
+      // this.state.bubbleColor === '' &&
+      // this.state.quickColor === '' &&
+      this.props.quickColor === '' &&
+      // this.state.mergeColor === '' &&
+      this.props.mergeColor === '' &&
+      // this.state.onSort === false &&
+      this.props.onSort === false &&
       this.state.locationSubmitted === true
     ) {
       this.setState({
-        mergeColor: '#f08a5d',
-        onSort: true,
+        // mergeColor: '#f08a5d',
+        // onSort: true,
         buttonColor: '#00587a',
       });
-
+      this.props.setOnSort(true);
+      this.props.setMergeColor('#f08a5d');
       console.log('on mergesort');
 
       let self = this;
@@ -572,9 +603,10 @@ class App extends React.Component {
         }),
       ]);
       self.setState({
-        onSort: false,
+        // onSort: false,
         buttonColor: '#fff',
       });
+      this.props.setOnSort(false);
     }
   };
 
@@ -650,7 +682,7 @@ class App extends React.Component {
                 <button
                   onClick={self.bubbleSort}
                   className='sortingAlgorithm'
-                  style={{ color: this.state.bubbleColor }}
+                  style={{ color: this.props.bubbleColor }}
                 >
                   Bubble Sort
                 </button>
@@ -660,7 +692,7 @@ class App extends React.Component {
                 <button
                   onClick={self.quickSort}
                   className='sortingAlgorithm'
-                  style={{ color: this.state.quickColor }}
+                  style={{ color: this.props.quickColor }}
                 >
                   Quick Sort
                 </button>
@@ -670,7 +702,7 @@ class App extends React.Component {
                 <button
                   onClick={self.mergeSort}
                   className='sortingAlgorithm'
-                  style={{ color: this.state.mergeColor }}
+                  style={{ color: this.props.mergeColor }}
                 >
                   Merge Sort
                 </button>
@@ -706,6 +738,19 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.querySelector('#root'));
+const mapStateToProps = state => {
+  return {
+    onSort: state.onSort,
+    bubbleColor: state.bubbleColor,
+    quickColor: state.quickColor,
+    mergeColor: state.mergeColor,
+  };
+};
+// ReactDOM.render(<App />, document.querySelector('#root'));
 
-export default App;
+export default connect(mapStateToProps, {
+  setOnSort,
+  setBubbleColor,
+  setMergeColor,
+  setQuickColor,
+})(App);
