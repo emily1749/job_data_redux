@@ -1,3 +1,19 @@
+import jobData from '../api/jobData';
+
+export const setCityLocation = cityLocation => {
+  return {
+    type: 'CITY_LOCATION',
+    payload: cityLocation,
+  };
+};
+
+export const setStateLocation = stateLocation => {
+  return {
+    type: 'STATE_LOCATION',
+    payload: stateLocation,
+  };
+};
+
 export const setOnSort = boolean => {
   return {
     type: 'ON_SORT',

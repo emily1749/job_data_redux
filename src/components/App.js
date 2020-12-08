@@ -8,6 +8,8 @@ import {
   setBubbleColor,
   setQuickColor,
   setMergeColor,
+  setCityLocation,
+  setStateLocation,
   // buttonColor,
 } from '../actions';
 import Loading from './Loading';
@@ -17,8 +19,8 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      city: '',
-      state: '',
+      // city: '',
+      // state: '',
       resultArrayOriginal: [],
       resultArray: [],
       // bubbleColor: '',
@@ -57,16 +59,19 @@ class App extends React.Component {
     }
   };
 
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+  onCityInputChange = e => {
+    this.props.setCityLocation(e.target.value);
+
+    // this.setState({
+    //   [e.target.name]: e.target.value,
+    // });
   };
 
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+  onStateInputChange = e => {
+    this.props.setStateLocation(e.target.value);
+    // this.setState({
+    // [e.target.name]: e.target.value,
+    // });
   };
 
   onSubmit = e => {
@@ -75,7 +80,8 @@ class App extends React.Component {
     // if (this.state.onSort === false) {
     if (this.props.onSort === false) {
       let resultArrayFetch = [];
-      let { city, state } = this.state;
+      let city = this.props.cityLocation;
+      let state = this.props.stateLocation;
 
       if (city && state) {
         city = city.replace(' ', '+');
@@ -643,7 +649,7 @@ class App extends React.Component {
                       name='city'
                       className='input-text'
                       value={city}
-                      onChange={this.onChange}
+                      onChange={this.onCityInputChange}
                     />
                   </div>
 
@@ -656,7 +662,7 @@ class App extends React.Component {
                       name='state'
                       className='input-text'
                       value={state}
-                      onChange={this.onChange}
+                      onChange={this.onStateInputChange}
                     />
                   </div>
 
@@ -744,6 +750,8 @@ const mapStateToProps = state => {
     bubbleColor: state.bubbleColor,
     quickColor: state.quickColor,
     mergeColor: state.mergeColor,
+    cityLocation: state.cityLocation,
+    stateLocation: state.stateLocation,
   };
 };
 // ReactDOM.render(<App />, document.querySelector('#root'));
@@ -753,4 +761,6 @@ export default connect(mapStateToProps, {
   setBubbleColor,
   setMergeColor,
   setQuickColor,
+  setCityLocation,
+  setStateLocation,
 })(App);
