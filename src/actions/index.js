@@ -55,3 +55,10 @@ export const setButtonColor = color => {
     payload: color,
   };
 };
+
+export const setMessage = msg => {
+  return {
+    type: 'MESSAGE',
+    payload: msg,
+  };
+};

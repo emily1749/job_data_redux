@@ -10,6 +10,7 @@ import {
   setMergeColor,
   setCityLocation,
   setStateLocation,
+  setMessage,
   // buttonColor,
 } from '../actions';
 import Loading from './Loading';
@@ -31,7 +32,7 @@ class App extends React.Component {
       loading: false,
       locationSubmitted: false,
       initialData: false,
-      message: 'Please enter location',
+      // message: 'Please enter location',
       error: false,
     };
   }
@@ -752,6 +753,7 @@ const mapStateToProps = state => {
     mergeColor: state.mergeColor,
     cityLocation: state.cityLocation,
     stateLocation: state.stateLocation,
+    message: state.message,
   };
 };
 // ReactDOM.render(<App />, document.querySelector('#root'));
@@ -763,4 +765,5 @@ export default connect(mapStateToProps, {
   setQuickColor,
   setCityLocation,
   setStateLocation,
+  setMessage,
 })(App);
