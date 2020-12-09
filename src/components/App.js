@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import './index.css';
 
 import { connect } from 'react-redux';
@@ -11,6 +11,8 @@ import {
   setCityLocation,
   setStateLocation,
   setMessage,
+  fetchJobData,
+
   // buttonColor,
 } from '../actions';
 import Loading from './Loading';
@@ -29,11 +31,11 @@ class App extends React.Component {
       // mergeColor: '',
       // onSort: false,
       buttonColor: '',
-      loading: false,
-      locationSubmitted: false,
+      // loading: false,
+      // locationSubmitted: false,
       initialData: false,
       // message: 'Please enter location',
-      error: false,
+      // error: false,
     };
   }
 
@@ -42,9 +44,22 @@ class App extends React.Component {
     console.log('on sort reset');
     // if (this.state.onSort === false) {
     if (this.props.onSort === false) {
-      const resultArrayCopy = JSON.parse(
-        JSON.stringify(self.state.resultArrayOriginal)
-      );
+      const resultArrayCopy = [
+        ['Typescript', 0.2, 0, 0, 0],
+        ['Ruby', 1.52, 0, 0, 1],
+        ['Python', 27.21, 0, 0, 2],
+        ['C++', 22.84, 0, 0, 3],
+        ['Golang', 0.4, 0, 0, 9],
+        ['Swift', 2.34, 0, 0, 4],
+        ['Javascript', 17.16, 0, 0, 5],
+        ['PHP', 2.44, 0, 0, 6],
+        ['Java', 17.56, 0, 0, 7],
+        ['C#', 8.22, 0, 0, 8],
+      ];
+      // [...this.props.jobData];
+      // JSON.parse(
+      //   JSON.stringify(self.state.resultArrayOriginal)
+      // );
       console.log(resultArrayCopy);
       self.setState({
         resultArray: resultArrayCopy,
@@ -76,87 +91,109 @@ class App extends React.Component {
   };
 
   onSubmit = e => {
+    let self = this;
     e.preventDefault();
-    var self = this;
+    // var self = this;
     // if (this.state.onSort === false) {
     if (this.props.onSort === false) {
-      let resultArrayFetch = [];
+      // let resultArrayFetch = [];
       let city = this.props.cityLocation;
       let state = this.props.stateLocation;
 
       if (city && state) {
+        console.log('in here');
         city = city.replace(' ', '+');
         // console.log("city: " + city + "State:" + state);
-
-        let totalValue = 0;
-        let count = 0;
         this.props.setMergeColor('');
         this.props.setBubbleColor('');
         this.props.setQuickColor('');
-        this.setState(
-          {
-            loading: true,
-            // bubbleColor: '',
-            // quickColor: '',
-            // mergeColor: '',
-          },
-          () => {
-            axios
-              .get(
-                'https://jobdataapi.emlin.repl.co/jobSkillsData/' +
-                  city +
-                  '/' +
-                  state
-              )
-              .then(function(response) {
-                response = response.data;
-                Object.values(response).forEach(function(value) {
-                  totalValue += value;
-                });
-                for (const [key, value] of Object.entries(response)) {
-                  let keyResult = key;
-                  let percentage = ((value / totalValue) * 100).toFixed(2);
 
-                  //push count to later use as key
-                  resultArrayFetch.push([keyResult, percentage, count]);
-                  count++;
-                }
-                if (resultArrayFetch.length < 10 || !resultArrayFetch) {
-                  self.setState({
-                    message:
-                      'Cannot find input location, please enter valid city and state',
-                    loading: false,
-                    error: true,
-                  });
-                } else {
-                  resultArrayFetch.forEach((element, index) => {
-                    let percent = element[1];
-                    element[1] = parseFloat(percent);
-
-                    //push 0 to every element, later will use to update color of bar during sort
-                    element.push(0);
-                  });
-                  const resultArrayCopy = JSON.parse(
-                    JSON.stringify(resultArrayFetch)
-                  );
-
-                  self.setState({
-                    loading: false,
-                    resultArrayOriginal: resultArrayCopy,
-                    resultArray: resultArrayFetch,
-                    locationSubmitted: true,
-                    initialData: true,
-                    error: false,
-                  });
-                }
-              });
-          }
-        );
-      } else {
-        self.setState({
-          message: 'Please enter valid city and state',
-          error: true,
+        const fetchData = async () => {
+          await this.props.fetchJobData(city, state);
+          console.log('now');
+        };
+        fetchData();
+        this.setState({
+          resultArray: [
+            ['Typescript', 0.2, 0, 0, 0],
+            ['Ruby', 1.52, 0, 0, 1],
+            ['Python', 27.21, 0, 0, 2],
+            ['C++', 22.84, 0, 0, 3],
+            ['Golang', 0.4, 0, 0, 9],
+            ['Swift', 2.34, 0, 0, 4],
+            ['Javascript', 17.16, 0, 0, 5],
+            ['PHP', 2.44, 0, 0, 6],
+            ['Java', 17.56, 0, 0, 7],
+            ['C#', 8.22, 0, 0, 8],
+          ],
         });
+        // let totalValue = 0;
+        // let count = 0;
+
+        // this.setState(
+        //   {
+        //     loading: true,
+        //     // bubbleColor: '',
+        //     // quickColor: '',
+        //     // mergeColor: '',
+        //   },
+        //   () => {
+        //     axios
+        //       .get(
+        //         'https://jobdataapi.emlin.repl.co/jobSkillsData/' +
+        //           city +
+        //           '/' +
+        //           state
+        //       )
+        //       .then(function(response) {
+        //         response = response.data;
+        //         Object.values(response).forEach(function(value) {
+        //           totalValue += value;
+        //         });
+        //         for (const [key, value] of Object.entries(response)) {
+        //           let keyResult = key;
+        //           let percentage = ((value / totalValue) * 100).toFixed(2);
+
+        //           //push count to later use as key
+        //           resultArrayFetch.push([keyResult, percentage, count]);
+        //           count++;
+        //         }
+        //         if (resultArrayFetch.length < 10 || !resultArrayFetch) {
+        //           self.setState({
+        //             message:
+        //               'Cannot find input location, please enter valid city and state',
+        //             loading: false,
+        //             error: true,
+        //           });
+        //         } else {
+        //           resultArrayFetch.forEach((element, index) => {
+        //             let percent = element[1];
+        //             element[1] = parseFloat(percent);
+
+        //             //push 0 to every element, later will use to update color of bar during sort
+        //             element.push(0);
+        //           });
+        //           const resultArrayCopy = JSON.parse(
+        //             JSON.stringify(resultArrayFetch)
+        //           );
+
+        //             self.setState({
+        //               loading: false,
+        //               resultArrayOriginal: resultArrayCopy,
+        //               resultArray: resultArrayFetch,
+        //               locationSubmitted: true,
+        //               initialData: true,
+        //               error: false,
+        //             });
+        //           }
+        //         });
+        //     }
+        //   );
+        // } else {
+        //   self.setState({
+        //     message: 'Please enter valid city and state',
+        //     error: true,
+        //   });
       }
     }
   };
@@ -170,7 +207,7 @@ class App extends React.Component {
       // this.state.mergeColor === '' &&
       this.props.mergeColor === '' &&
       this.props.onSort === false &&
-      this.state.locationSubmitted === true
+      this.props.locationSubmitted === true
     ) {
       this.setState({
         // bubbleColor: '#f08a5d',
@@ -285,7 +322,7 @@ class App extends React.Component {
       this.props.mergeColor === '' &&
       // this.state.onSort === false &&
       this.props.onSort === false &&
-      this.state.locationSubmitted === true
+      this.props.locationSubmitted === true
     ) {
       this.setState({
         // quickColor: '#f08a5d',
@@ -441,7 +478,7 @@ class App extends React.Component {
       this.props.mergeColor === '' &&
       // this.state.onSort === false &&
       this.props.onSort === false &&
-      this.state.locationSubmitted === true
+      this.props.locationSubmitted === true
     ) {
       this.setState({
         // mergeColor: '#f08a5d',
@@ -618,6 +655,8 @@ class App extends React.Component {
   };
 
   render() {
+    console.log('RERENDERED');
+    console.log(this.props.loading);
     const { city, state } = this.state;
     var self = this;
     return (
@@ -729,11 +768,11 @@ class App extends React.Component {
         </div>
 
         <div className='barGraph-container'>
-          {this.state.initialData === false ||
-          this.state.error === true ||
+          {this.props.locationSubmitted === false ||
+          this.props.error === true ||
           (this.state.initialData === true && this.state.loading === true) ? (
             <Loading
-              loading={this.state.loading}
+              loading={this.props.loading}
               message={this.state.message}
             />
           ) : (
@@ -754,6 +793,10 @@ const mapStateToProps = state => {
     cityLocation: state.cityLocation,
     stateLocation: state.stateLocation,
     message: state.message,
+    loading: state.jobData.loading,
+    jobData: state.jobData.jobData,
+    error: state.jobData.error,
+    locationSubmitted: state.jobData.locationSubmitted,
   };
 };
 // ReactDOM.render(<App />, document.querySelector('#root'));
@@ -766,4 +809,5 @@ export default connect(mapStateToProps, {
   setCityLocation,
   setStateLocation,
   setMessage,
+  fetchJobData,
 })(App);

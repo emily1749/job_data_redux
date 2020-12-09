@@ -1,5 +1,22 @@
 import jobData from '../api/jobData';
 
+export const fetchJobData = (city, state) => dispatch => {
+  console.log('fetch job data');
+  dispatch({ type: 'TOGGLE_LOADING' });
+  // const response = await
+  jobData
+    .get(`${city}/${state}`)
+    .then(value => {
+      dispatch({ type: 'STORE_VALUE' });
+    })
+    .catch(error => {
+      dispatch({ type: 'FETCH_ERROR' });
+    });
+  // console.log(response.data);
+
+  // dispatch({ type: 'FETCH_JOB_DATA', payload: response.data });
+};
+
 export const setCityLocation = cityLocation => {
   return {
     type: 'CITY_LOCATION',
