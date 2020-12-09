@@ -43,7 +43,7 @@ class App extends React.Component {
     let self = this;
     console.log('on sort reset');
     // if (this.state.onSort === false) {
-    if (this.props.onSort === false) {
+    if (this.props.onSort === false && this.props.locationSubmitted === true) {
       const resultArrayCopy = [
         ['Typescript', 0.2, 0, 0, 0],
         ['Ruby', 1.52, 0, 0, 1],
@@ -127,73 +127,6 @@ class App extends React.Component {
             ['C#', 8.22, 0, 0, 8],
           ],
         });
-        // let totalValue = 0;
-        // let count = 0;
-
-        // this.setState(
-        //   {
-        //     loading: true,
-        //     // bubbleColor: '',
-        //     // quickColor: '',
-        //     // mergeColor: '',
-        //   },
-        //   () => {
-        //     axios
-        //       .get(
-        //         'https://jobdataapi.emlin.repl.co/jobSkillsData/' +
-        //           city +
-        //           '/' +
-        //           state
-        //       )
-        //       .then(function(response) {
-        //         response = response.data;
-        //         Object.values(response).forEach(function(value) {
-        //           totalValue += value;
-        //         });
-        //         for (const [key, value] of Object.entries(response)) {
-        //           let keyResult = key;
-        //           let percentage = ((value / totalValue) * 100).toFixed(2);
-
-        //           //push count to later use as key
-        //           resultArrayFetch.push([keyResult, percentage, count]);
-        //           count++;
-        //         }
-        //         if (resultArrayFetch.length < 10 || !resultArrayFetch) {
-        //           self.setState({
-        //             message:
-        //               'Cannot find input location, please enter valid city and state',
-        //             loading: false,
-        //             error: true,
-        //           });
-        //         } else {
-        //           resultArrayFetch.forEach((element, index) => {
-        //             let percent = element[1];
-        //             element[1] = parseFloat(percent);
-
-        //             //push 0 to every element, later will use to update color of bar during sort
-        //             element.push(0);
-        //           });
-        //           const resultArrayCopy = JSON.parse(
-        //             JSON.stringify(resultArrayFetch)
-        //           );
-
-        //             self.setState({
-        //               loading: false,
-        //               resultArrayOriginal: resultArrayCopy,
-        //               resultArray: resultArrayFetch,
-        //               locationSubmitted: true,
-        //               initialData: true,
-        //               error: false,
-        //             });
-        //           }
-        //         });
-        //     }
-        //   );
-        // } else {
-        //   self.setState({
-        //     message: 'Please enter valid city and state',
-        //     error: true,
-        //   });
       }
     }
   };
