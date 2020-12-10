@@ -9,22 +9,26 @@ const BarGraph = props => {
     'linear-gradient( #5c2a9d, #d789d7)', //purple
     'linear-gradient( #f76a8c, #ffaaa5)', //pink/red
   ];
-
-  let barGraphMap = props.resultArray.map(function(value, index) {
-    return (
-      <div className='bargroup' key={value[0]}>
-        <div
-          className='bar'
-          style={{
-            backgroundImage: color[value[3]],
-            height: `${value[1] * 10}px`,
-          }}
-        ></div>
-        <h2>{value[0]}</h2>
-        <p>{value[1]}%</p>
-      </div>
-    );
-  });
+  let barGraphMap;
+  if (props.resultArray) {
+    console.log('bar graph props' + props.resultArray.jobData);
+    console.log(props.resultArray.jobData);
+    barGraphMap = props.resultArray.jobData.map(function(value, index) {
+      return (
+        <div className='bargroup' key={value[0]}>
+          <div
+            className='bar'
+            style={{
+              backgroundImage: color[value[2]],
+              height: `${value[1] * 10}px`,
+            }}
+          ></div>
+          <h2>{value[0]}</h2>
+          <p>{value[1]}%</p>
+        </div>
+      );
+    });
+  }
 
   return <div className='barGraph'>{barGraphMap}</div>;
 };

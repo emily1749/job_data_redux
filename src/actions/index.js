@@ -4,18 +4,29 @@ export const fetchJobData = (city, state) => dispatch => {
   console.log('fetch job data');
   dispatch({ type: 'TOGGLE_LOADING' });
   // const response = await
+  console.log(`${jobData}${city}/${state}`);
   jobData
     .get(`${city}/${state}`)
     .then(value => {
-      dispatch({ type: 'STORE_VALUE' });
+      console.log('value');
+      console.log(value.data);
+      dispatch({ type: 'STORE_VALUE', payload: value.data });
+      dispatch({ type: 'COPY_VALUE', payload: value.data });
     })
     .catch(error => {
-      dispatch({ type: 'FETCH_ERROR' });
+      dispatch({ type: 'FETCH_ERROR', payload: error });
     });
   // console.log(response.data);
 
   // dispatch({ type: 'FETCH_JOB_DATA', payload: response.data });
 };
+
+// export const setResultArray = arr => {
+//   return {
+//     type: 'UPDATE_RESULT_ARRAY',
+//     payload: arr,
+//   };
+// };
 
 export const setCityLocation = cityLocation => {
   return {

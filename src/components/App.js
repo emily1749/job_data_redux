@@ -12,8 +12,8 @@ import {
   setStateLocation,
   setMessage,
   fetchJobData,
-
-  // setButtonColor,
+  // setResultArray,
+  setButtonColor,
 } from '../actions';
 import Loading from './Loading';
 import BarGraph from './BarGraph';
@@ -167,8 +167,8 @@ class App extends React.Component {
       let endFlag = false;
 
       let myInterval = setInterval(() => {
-        if (count === 0) {
-        }
+        // if (count === 0) {
+        // }
         function swap(input, indexA, indexB) {
           flag = false;
           let temp = input[indexA];
@@ -178,12 +178,13 @@ class App extends React.Component {
         }
 
         if (endFlag === true || count === 9) {
-          let dataArray = self.state.resultArray;
+          // let dataArray = self.state.resultArray;
+          let dataArray = [...this.props.resultArray];
           if (dataArray[8][1] > dataArray[9][1]) {
             swap(dataArray, 8, 9);
-            self.setState({
-              resultArray: dataArray,
-            });
+            // self.setState({
+            //   resultArray: dataArray,
+            // });
           }
 
           if (round < 9) {
@@ -839,7 +840,7 @@ class App extends React.Component {
               message={this.props.message}
             />
           ) : (
-            <BarGraph resultArray={this.state.resultArray} />
+            <BarGraph resultArray={this.props.resultArray} />
           )}
         </div>
       </div>
@@ -857,9 +858,10 @@ const mapStateToProps = state => {
     stateLocation: state.stateLocation,
     message: state.message,
     loading: state.jobData.loading,
-    jobData: state.jobData.jobData,
+    jobDataCopy: state.jobData.jobDataCopy,
     error: state.jobData.error,
     locationSubmitted: state.jobData.locationSubmitted,
+    resultArray: state.jobData.resultArray,
   };
 };
 // ReactDOM.render(<App />, document.querySelector('#root'));
@@ -873,4 +875,5 @@ export default connect(mapStateToProps, {
   setStateLocation,
   setMessage,
   fetchJobData,
+  // setResultArray,
 })(App);

@@ -8,9 +8,11 @@ import locationSubmittedReducer from './locationSubmittedReducer';
 import buttonColorReducer from './bubbleColorReducer';
 import stateLocationReducer from './stateLocationReducer';
 import cityLocationReducer from './cityLocationReducer';
+import resultArrayReducer from './resultArrayReducer';
 
 export default combineReducers({
   jobData: fetchJobDataReducer,
+  // resultArray: resultArrayReducer,
   onSort: onSortReducer,
   bubbleColor: bubbleColorReducer,
   quickColor: quickColorReducer,
